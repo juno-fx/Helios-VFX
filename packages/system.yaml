@@ -162,6 +162,11 @@ packages:
   - debian: procps
     rhel: procps-ng
 
+  # Libraries for QT6 GUI applications, including platform plugins.
+  - ubuntu: qt6-qpa-plugins
+    rhel: libatomic xcb-util-wm xcb-util-cursor qt5-qtbase-gui
+    debian: libxcb-cursor0 qt6-qpa-plugins
+
   # ====================================
   # X11 and Display Server Packages
   # ====================================
