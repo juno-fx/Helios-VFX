@@ -115,6 +115,28 @@ packages:
   # Extra plugins for Tumbler to support additional file types (e.g., PDFs, videos, RAW images) in thumbnail previews.
   - debian: tumbler-plugins-extra
 
+  # Lightweight text editor for the XFCE desktop environment.
+  - common: mousepad
+
+  # Lightweight text editor for the XFCE desktop environment.
+  - common: ffmpeg
+
+    # Archive manager for the XFCE desktop environment, used to create and extract compressed files.
+  - common: xarchiver
+
+  # ========================================
+  # Nuke Dependencies
+  # ========================================
+  - debian: libglvnd0
+  - rhel: xcb-util-cursor-devel
+    debian: libxcb-cursor-dev
+  - rhel: xcb-util-keysyms
+  - debian: libxcomposite-dev
+  - debian: libxcb-xinerama0
+  - debian: libxcb-icccm4
+  - rhel: xcb-util-wm
+    debian: libxcb-util0-dev
+
   # ===============================
   # System Utilities and Libraries
   # ===============================
@@ -142,6 +164,11 @@ packages:
   # Tools for viewing and controlling processes and system usage (e.g., ps, top, uptime, kill).
   - debian: procps
     rhel: procps-ng
+
+  # Libraries for QT6 GUI applications, including platform plugins.
+  - ubuntu: qt6-qpa-plugins
+    rhel: libatomic xcb-util-wm xcb-util-cursor qt5-qtbase-gui
+    debian: libxcb-cursor0 qt6-qpa-plugins
 
   # ====================================
   # X11 and Display Server Packages
@@ -172,6 +199,7 @@ packages:
 
   # XKB (X Keyboard Extension) library, used for handling keyboard input via X11.
   - debian: libxkbcommon-x11-0
+    rhel: libxkbcommon-x11
   - debian: libxtst6
   - debian: libxcb-keysyms1
 
