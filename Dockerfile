@@ -4,7 +4,6 @@ ARG SRC=jammy
 FROM ${IMAGE} AS distro
 
 ENV HELIOS_VERSION="0.0.0"
-ENV HELIOS_XVFB_PATCH=21
 ENV SRC=${SRC}
 
 
@@ -44,24 +43,10 @@ RUN pip install pyyaml --break-system-packages \
 
 
 
-# xvfb build stage
-FROM distro AS xvfb
-
-# pull in args for the tag
-ARG SRC
-
-# build xvfb
-COPY patches/* /tmp/
-COPY --chmod=777 ${SRC}/build/xvfb-dependencies.sh /tmp/
-COPY --chmod=777 common/build/xvfb.sh /tmp/
-RUN /tmp/xvfb.sh
-
-
-
 # build selkies frontend
 FROM alpine AS selkies-frontend
 
-ENV SELKIES_VERSION="89e39cf7d58c8f7c87ac5922b56b84f745ddeeab"
+ENV SELKIES_VERSION="3a7d4d4ee868c85af205d786455ece6a2d4a8935"
 
 # grab package lists
 COPY --from=lists /work/lists/ /lists/
@@ -75,7 +60,7 @@ RUN apk add bash && /tmp/frontend.sh
 FROM distro AS base-image
 
 # version of selkies to clone
-ENV SELKIES_VERSION="89e39cf7d58c8f7c87ac5922b56b84f745ddeeab"
+ENV SELKIES_VERSION="3a7d4d4ee868c85af205d786455ece6a2d4a8935"
 
 # environment variables
 ENV PREFIX=/
@@ -110,9 +95,6 @@ RUN rm -rf /lists
 
 # install init system
 COPY --from=s6 /s6 /
-
-# install custom xvfb (if needed)
-COPY --from=xvfb /build-out/ /
 
 # install selkies frontend
 COPY --from=selkies-frontend /build-out/ /usr/share/selkies/www/
