@@ -52,9 +52,10 @@ jobs:
           short_sha=$(git rev-parse --short HEAD)
           for repo in $TARGET_REPOS; do
             echo "Syncing $repo"
-            git remote remove ${repo} || true
-            git remote add ${repo} https://x-oauth-token:${GH_TOKEN}@github.com/${TARGET_ORG}/${repo}.git
-            git push ${repo} HEAD:sync-${short_sha}
+            # ignore global gitconfig by "hiding" the homedir
+            HOME=/dev/null git remote remove ${repo} || true
+            HOME=/dev/null git remote add ${repo} https://x-oauth-token:${GH_TOKEN}@github.com/${TARGET_ORG}/${repo}.git
+            HOME=/dev/null git push ${repo} HEAD:sync-${short_sha}
             gh pr create \
               --repo ${TARGET_ORG}/${repo} \
               --base main \
