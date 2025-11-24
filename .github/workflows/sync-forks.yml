@@ -10,10 +10,6 @@ jobs:
     runs-on:
       - X64
     steps:
-      - name: Checkout the repo
-        uses: actions/checkout@main
-        with:
-          fetch-depth: 0
       - name: Generate a GH token
         id: generate-token
         uses: actions/create-github-app-token@v2
@@ -21,12 +17,24 @@ jobs:
           app-id: ${{ secrets.JUNO_CI_APP_ID }}
           private-key: ${{ secrets.JUNO_CI_APP_PRIVATE_KEY }}
           owner: ${{ github.repository_owner }}
+      - name: Checkout the repo
+        uses: actions/checkout@main
+        with:
+          fetch-depth: 0
+          token: ${{ steps.generate-token.outputs.token }}
       # useful references in the README on: https://github.com/actions/create-github-app-token 
       - name: Get GitHub App User ID
         id: get-user-id
-        run: echo "user-id=$(gh api "/users/${{ steps.app-token.outputs.app-slug }}[bot]" --jq .id)" >> "$GITHUB_OUTPUT"
+        run: echo "user-id=$(gh api "/users/${{ steps.generate-token.outputs.app-slug }}[bot]" --jq .id)" >> "$GITHUB_OUTPUT"
         env:
-          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          GH_TOKEN: ${{ steps.generate-token.outputs.token }}
+
+      # This could cause a sideffect for a long-running CI run.
+      # That's just a tradeoff to pay for now - long-term having a fresh ephemeral pod for each run will be the way to go.
+      - name: Pre-emptively remove stale gh auth sessions
+        shell: bash
+        run: |
+          gh auth logout -h github.com -u juno-ci[bot] || true
 
       - name: Sync all Helios forks
         shell: bash
@@ -35,8 +43,11 @@ jobs:
           TARGET_ORG: juno-fx
           TARGET_REPOS: "helios-vfx helios-ai"
         run: |
-          git config user.name '${{ steps.generate-token.outputs.app-slug }}[bot]'
-          git config user.email '${{ steps.get-user-id.outputs.user-id }}+${{ steps.app-token.outputs.app-slug }}[bot]@users.noreply.github.com'
+          gh auth status
+          echo git config --local user.name '${{ steps.generate-token.outputs.app-slug }}[bot]'
+          echo git config --local user.email '${{ steps.get-user-id.outputs.user-id }}+${{ steps.generate-token.outputs.app-slug }}[bot]@users.noreply.github.com'
+          git config --local user.name '${{ steps.generate-token.outputs.app-slug }}[bot]'
+          git config --local user.email '${{ steps.get-user-id.outputs.user-id }}+${{ steps.generate-token.outputs.app-slug }}[bot]@users.noreply.github.com'
           # We must ditch all the cred details the checkout action fills in
           # otherwise this conflicts with our basic auth passed in the remote and fails to push
           git config --local credential.helper ""
@@ -44,9 +55,10 @@ jobs:
           short_sha=$(git rev-parse --short HEAD)
           for repo in $TARGET_REPOS; do
             echo "Syncing $repo"
-            git remote remove ${repo} || true
-            git remote add ${repo} https://x-oauth-token:${GH_TOKEN}@github.com/${TARGET_ORG}/${repo}.git
-            git push ${repo} HEAD:sync-${short_sha}
+            # ignore global gitconfig by "hiding" the homedir
+            HOME=/dev/null git remote remove ${repo} || true
+            HOME=/dev/null git remote add ${repo} https://x-oauth-token:${GH_TOKEN}@github.com/${TARGET_ORG}/${repo}.git
+            HOME=/dev/null git push ${repo} HEAD:sync-${short_sha}
             gh pr create \
               --repo ${TARGET_ORG}/${repo} \
               --base main \
