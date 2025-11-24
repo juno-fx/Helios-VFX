@@ -21,8 +21,8 @@ jobs:
           TARGET_ORG: juno-fx
           TARGET_REPOS: "helios-vfx helios-ai"
         run: |
-          git config user.name 'github-actions'
-          git config user.email 'github-actions@users.noreply.github.com'
+          git config user.name 'aldmbmtl'
+          git config user.email 'aldmbmtl@users.noreply.github.com'
           # We must ditch all the cred details the checkout action fills in
           # otherwise this conflicts with our basic auth passed in the remote and fails to push
           git config --local credential.helper ""
