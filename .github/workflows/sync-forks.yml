@@ -41,9 +41,9 @@ jobs:
         run: |
           gh auth status
           echo git config --local user.name '${{ steps.generate-token.outputs.app-slug }}[bot]'
-          echo git config --local user.email '${{ steps.get-user-id.outputs.user-id }}+${{ steps.app-token.outputs.app-slug }}[bot]@users.noreply.github.com'
+          echo git config --local user.email '${{ steps.get-user-id.outputs.user-id }}+${{ steps.generate-token.outputs.app-slug }}[bot]@users.noreply.github.com'
           git config --local user.name '${{ steps.generate-token.outputs.app-slug }}[bot]'
-          git config --local user.email '${{ steps.get-user-id.outputs.user-id }}+${{ steps.app-token.outputs.app-slug }}[bot]@users.noreply.github.com'
+          git config --local user.email '${{ steps.get-user-id.outputs.user-id }}+${{ steps.generate-token.outputs.app-slug }}[bot]@users.noreply.github.com'
           # We must ditch all the cred details the checkout action fills in
           # otherwise this conflicts with our basic auth passed in the remote and fails to push
           git config --local credential.helper ""
