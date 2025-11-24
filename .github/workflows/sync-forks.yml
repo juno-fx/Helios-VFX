@@ -33,8 +33,8 @@ jobs:
           TARGET_ORG: juno-fx
           TARGET_REPOS: "helios-vfx helios-ai"
         run: |
-          gh auth status
           gh auth logout -h github.com -u juno-ci[bot]
+          gh auth status
           git config --local user.name '${{ steps.generate-token.outputs.app-slug }}[bot]'
           git config --local user.email '${{ steps.get-user-id.outputs.user-id }}+${{ steps.app-token.outputs.app-slug }}[bot]@users.noreply.github.com'
           # We must ditch all the cred details the checkout action fills in
