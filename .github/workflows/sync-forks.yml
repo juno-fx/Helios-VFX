@@ -26,6 +26,12 @@ jobs:
         env:
           GH_TOKEN: ${{ steps.generate-token.outputs.token }}
 
+
+      - name: Fix oops
+        shell: bash
+        run: |
+          gh auth logout -h github.com -u juno-ci[bot]
+
       - name: Sync all Helios forks
         shell: bash
         env:
