@@ -23,14 +23,15 @@ jobs:
         run: |
           git config user.name 'aldmbmtl'
           git config user.email 'aldmbmtl@users.noreply.github.com'
-          gh auth setup-git
           # We must ditch all the cred details the checkout action fills in
           # otherwise this conflicts with our basic auth passed in the remote and fails to push
+          git config --local credential.helper ""
+          git config --local --unset http.https://github.com/.extraheader || true
           short_sha=$(git rev-parse --short HEAD)
           for repo in $TARGET_REPOS; do
             echo "Syncing $repo"
             git remote remove ${repo} || true
-            git remote add ${repo} https://github.com/${TARGET_ORG}/${repo}.git
+            git remote add ${repo} https://x-access-token:${GH_TOKEN}@github.com/${TARGET_ORG}/${repo}.git
             git push ${repo} HEAD:sync-${short_sha}
             gh pr create \
               --repo ${TARGET_ORG}/${repo} \
