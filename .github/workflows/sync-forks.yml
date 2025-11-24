@@ -30,7 +30,7 @@ jobs:
       - name: Fix oops
         shell: bash
         run: |
-          gh auth logout -h github.com -u juno-ci[bot]
+          gh auth logout -h github.com -u juno-ci[bot] || true
 
       - name: Sync all Helios forks
         shell: bash
