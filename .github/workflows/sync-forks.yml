@@ -23,13 +23,13 @@ jobs:
         run: |
           git config user.name 'aldmbmtl'
           git config user.email 'aldmbmtl@users.noreply.github.com'
+          gh auth setup-git
           # We must ditch all the cred details the checkout action fills in
           # otherwise this conflicts with our basic auth passed in the remote and fails to push
           short_sha=$(git rev-parse --short HEAD)
           for repo in $TARGET_REPOS; do
             echo "Syncing $repo"
             git remote remove ${repo} || true
-            gh auth setup-git
             git remote add ${repo} https://github.com/${TARGET_ORG}/${repo}.git
             git push ${repo} HEAD:sync-${short_sha}
             gh pr create \
