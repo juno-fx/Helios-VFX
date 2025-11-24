@@ -8,10 +8,6 @@ jobs:
     runs-on:
       - X64
     steps:
-      - name: Checkout the repo
-        uses: actions/checkout@main
-        with:
-          fetch-depth: 0
       - name: Generate a GH token
         id: generate-token
         uses: actions/create-github-app-token@v2
@@ -19,6 +15,11 @@ jobs:
           app-id: ${{ secrets.JUNO_CI_APP_ID }}
           private-key: ${{ secrets.JUNO_CI_APP_PRIVATE_KEY }}
           owner: ${{ github.repository_owner }}
+      - name: Checkout the repo
+        uses: actions/checkout@main
+        with:
+          fetch-depth: 0
+          token: ${{ steps.generate-token.outputs.token }}
       # useful references in the README on: https://github.com/actions/create-github-app-token 
       - name: Get GitHub App User ID
         id: get-user-id
