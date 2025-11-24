@@ -1,8 +1,6 @@
 name: Sync Helios forks
 on:
-  push:
-    branches:
-      - main
+  push: {}
 
 jobs:
   sync-forks:
