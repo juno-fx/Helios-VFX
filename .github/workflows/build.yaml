@@ -26,14 +26,10 @@ jobs:
         distro:
           - image: debian:bookworm
             source: bookworm
-          - image: debian:sid
-            source: sid
           - image: ubuntu:jammy
             source: jammy
           - image: ubuntu:noble
             source: noble
-          - image: kalilinux/kali-rolling:latest
-            source: kali
           - image: rockylinux:9
             source: rocky-9
           - image: almalinux:9
@@ -63,7 +59,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: "${{ github.ref_name == 'main' || startsWith(github.event.ref, 'refs/tags/v') || github.ref_name == 'testing' }}"
-          tags: junoinnovations/helios:${{ (github.ref_name == 'main' && 'unstable') || (github.ref_name == 'testing' && 'testing') || steps.calculate_ref.outputs.ref }}-${{ matrix.distro.source }}
+          tags: junoinnovations/helios-vfx:${{ (github.ref_name == 'main' && 'unstable') || (github.ref_name == 'testing' && 'testing') || steps.calculate_ref.outputs.ref }}-${{ matrix.distro.source }}
           build-args: |
             IMAGE=${{ matrix.distro.image }}
             SRC=${{ matrix.distro.source }}
