@@ -94,7 +94,7 @@ if [ -x /usr/bin/xfce4-session ]; then
 		echo
 		echo ">>> Running with vglrun <<<"
 		echo
-		exec vglrun -d "$chosen" dbus-launch --exit-with-session /usr/bin/xfce4-session 2>&1
+		exec vglrun -d egl dbus-launch --exit-with-session /usr/bin/xfce4-session 2>&1
 	fi
 else
 	echo "Desktop Environment not found."
