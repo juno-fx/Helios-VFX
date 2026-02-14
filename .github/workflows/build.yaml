@@ -1,5 +1,6 @@
 name: Build Helios Image
 on:
+  workflow_dispatch:
   push:
     paths-ignore:
       - .github/**
