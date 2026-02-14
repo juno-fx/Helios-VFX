@@ -30,7 +30,7 @@ packages:
 	@python ./hack/packages.py $(shell pwd)/packages/ $(shell pwd)/.packages/
 
 build-all:
-	@docker build . --build-arg IMAGE=debian:bookworm --build-arg SRC=bookworm -t bookworm
+	@podman build . --build-arg IMAGE=debian:bookworm --build-arg SRC=bookworm -t bookworm
 	@docker build . --build-arg IMAGE=debian:sid --build-arg SRC=sid -t sid
 	@docker build . --build-arg IMAGE=kalilinux/kali-rolling:latest --build-arg SRC=kali -t kali
 	@docker build . --build-arg IMAGE=ubuntu:jammy --build-arg SRC=jammy -t jammy

@@ -56,10 +56,6 @@ jobs:
         run: |
           pwd
           ls -la
-          echo "==== kali ===="
-          ls -la kali || true
-          echo "==== jammy ===="
-          ls -la jammy || true
 
       - name: Login to Docker Hub
         uses: docker/login-action@v3
