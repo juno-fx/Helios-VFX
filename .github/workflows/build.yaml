@@ -50,6 +50,16 @@ jobs:
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GIT_PASS }}
+          submodules: true
+
+      - name: Debug build context
+        run: |
+          pwd
+          ls -la
+          echo "==== kali ===="
+          ls -la kali || true
+          echo "==== jammy ===="
+          ls -la jammy || true
 
       - name: Login to Docker Hub
         uses: docker/login-action@v3
