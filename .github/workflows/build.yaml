@@ -69,3 +69,8 @@ jobs:
         run: |
           echo "Building ${IMAGE}"
           docker push ${IMAGE}
+
+      - name: Clean Up
+        shell: bash
+        if: always()
+        run: docker system prune -af
