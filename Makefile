@@ -1,6 +1,4 @@
-SHELL := /bin/bash
-
-.PHONY: docs jammy kali noble rocky-9 alma-9 bookworm sid alpine-3 packages
+.PHONY: docs jammy noble rocky-9 alma-9 bookworm packages
 
 # documentation
 docs: .venv/bin/activate
@@ -41,14 +39,6 @@ build-all:
 # DEBIAN
 bookworm:
 	@docker compose build --build-arg IMAGE=debian:bookworm --build-arg SRC=bookworm
-	@docker compose up
-
-sid:
-	@docker compose build --build-arg IMAGE=debian:sid --build-arg SRC=sid
-	@docker compose up
-
-kali:
-	@docker compose build --build-arg IMAGE=kalilinux/kali-rolling:latest --build-arg SRC=kali
 	@docker compose up
 
 # UBUNTU
