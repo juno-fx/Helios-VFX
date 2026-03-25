@@ -58,7 +58,7 @@ FROM alpine AS selkies-frontend
 # pull in args for the tag
 ARG SRC
 
-ENV SELKIES_VERSION="d70c9155e0df97ac1e6ac7a4cce04e4b04840286"
+ENV SELKIES_VERSION="af1a1c252563d2f136d641b81d6b1dd38a3a0d93"
 
 # grab package lists
 COPY --from=lists /work/lists/ /lists/
@@ -75,7 +75,7 @@ FROM distro AS base-image
 ARG SRC
 
 # version of selkies to clone
-ENV SELKIES_VERSION="d70c9155e0df97ac1e6ac7a4cce04e4b04840286"
+ENV SELKIES_VERSION="af1a1c252563d2f136d641b81d6b1dd38a3a0d93"
 
 # environment variables
 ENV PREFIX=/
@@ -119,7 +119,8 @@ COPY common/root/ /
 
 # LD_PRELOAD wrapper handlers (selkies hack)
 RUN chmod +x /usr/bin/thunar \
-    && chmod +x /usr/bin/sudo
+    && chmod +x /usr/bin/sudo \
+    && chmod +x /usr/bin/helios
 
 # copy in distro specific custom rootfs changes
 COPY ${SRC}/root/ /
