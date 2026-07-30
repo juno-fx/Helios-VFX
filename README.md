@@ -12,37 +12,33 @@
 
 ---
 
-[Official Documentation](https://juno-fx.github.io/Helios/) 
+[Official Documentation](https://juno-fx.github.io/Helios/)
 
 Helios provides base images for multiple key Linux distributions, optimized to be as small as possible to:
 
-- Reduce pull times  
-- Minimize the attack surface  
-- Lower data transfer costs  
+- Reduce pull times
+- Minimize the attack surface
+- Lower data transfer costs
 
 These images are lightweight, efficient, and ready to use across environments like Docker, Kubernetes, and more.
 
 Some key points about Helios:
 
-- **Base Images**: Designed as base images for Selkies-compatible deployments.  
+- **Base Images**: Designed as base images for Selkies-compatible deployments.
 - **Extremely Minimal Desktops**: Images are intentionally minimal; avoid adding software directly. Instead, extend via the `FROM` instruction in your Dockerfile.
 
 ## 📚 Table of Contents
 
-- 🚀 [Features](#✨-features)  
+- 🚀 [Features](#✨-features)
 - ⚙️ [Selkies Setup](#⚙️-selkies-setup)
-- 🐧 [Distros Overview](#🐧-distros-overview)  
-  - Alpine  
-    - [Alpine 3](#alpine-3)  
-  - Debian  
-    - [Debian 12 (Bookworm)](#debian-12-bookworm)  
-    - [Debian Rolling (Trixie/Sid)](#debian-rolling-trixie-sid)  
-    - [Kali Linux (Rolling Release)](#kali-linux-rolling-release)  
-  - Ubuntu  
-    - [Ubuntu 24.04 (Noble)](#ubuntu-2404-noble)  
-    - [Ubuntu 22.04 (Jammy)](#ubuntu-2204-jammy)  
-  - RHEL  
-    - [Rocky Linux 9](#rocky-linux-9)  
+- 🐧 [Distros Overview](#🐧-distros-overview)
+  - Debian
+    - [Debian 12 (Bookworm)](#debian-12-bookworm)
+  - Ubuntu
+    - [Ubuntu 24.04 (Noble)](#ubuntu-2404-noble)
+    - [Ubuntu 22.04 (Jammy)](#ubuntu-2204-jammy)
+  - RHEL
+    - [Rocky Linux 9](#rocky-linux-9)
     - [Alma Linux 9](#alma-linux-9)
 - 🏷️ [Versioning](#%EF%B8%8F-versioning)
 - ⚡ [Usage](https://juno-fx.github.io/Helios/deploy-usage/)
@@ -52,7 +48,7 @@ Some key points about Helios:
 
 ## ✨ Features
 
-- **Lightweight**: Minimal resource usage for efficient performance.  
+- **Lightweight**: Minimal resource usage for efficient performance.
 - **WebRTC Support** (Coming Soon): High performance, low-latency video streaming.
 - **Audio Support**: High-quality audio streaming for improved user experience.  
 - **VirtualGL Support**: Hardware-accelerated 3D graphics using `vglrun`.
@@ -124,7 +120,6 @@ Helios uses its own versioning scheme independent of the underlying distro versi
 | `v0.0.0-bookworm` | Debian 12 (Bookworm) |
 | `v0.0.0-noble`    | Ubuntu 24.04         |
 | `v0.0.0-jammy`    | Ubuntu 22.04         |
-| `v0.0.0-kali`     | Kali Linux           |
 | `v0.0.0-rocky-9`  | Rocky Linux          |
 | `v0.0.0-alma-9`   | Alma Linux           |
 
@@ -138,7 +133,6 @@ Helios uses its own versioning scheme independent of the underlying distro versi
   - `unstable-bookworm` (Debian 12)
   - `unstable-noble` (Ubuntu 24.04)
   - `unstable-jammy` (Ubuntu 22.04)
-  - `unstable-kali` (Kali Linux)
   - `unstable-rocky-9` (Rocky Linux)
   - `unstable-alma-9` (Alma Linux)
 
@@ -148,7 +142,6 @@ Helios uses its own versioning scheme independent of the underlying distro versi
   - `testing-noble` (Ubuntu 24.04)
   - `testing-bookworm` (Debian 12)
   - `testing-jammy` (Ubuntu 22.04)
-  - `testing-kali` (Kali Linux)
   - `testing-rocky-9` (Rocky Linux)
   - `testing-alma-9` (Alma Linux)
 

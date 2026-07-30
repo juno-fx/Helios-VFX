@@ -27,14 +27,10 @@ jobs:
         distro:
           - image: debian:bookworm
             source: bookworm
-          - image: debian:sid
-            source: sid
           - image: ubuntu:jammy
             source: jammy
           - image: ubuntu:noble
             source: noble
-          - image: kalilinux/kali-rolling:latest
-            source: kali
           - image: rockylinux:9
             source: rocky-9
           - image: almalinux:9
