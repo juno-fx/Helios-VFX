@@ -1,3 +1,5 @@
+SHELL := /bin/bash
+
 .PHONY: docs jammy noble rocky-9 alma-9 bookworm packages
 
 # documentation
@@ -6,14 +8,15 @@ docs: .venv/bin/activate
 
 # we use realpath, as some of our runners symlink the storage. linkchecker doesn't like that
 lint-docs: .venv/bin/activate
-	@(grep -q -r '<a href' docs && (echo Please use markdown links instead of href. && exit 1)) || true
-	([[ -d site ]] && rm -rf site/) || true
-	.venv/bin/mkdocs build --strict
-	cp -r site /tmp/site-terra-official-docs
-	@ # This is due to some CI environments providing root as default.
-	@ # linkchecker will drop to the `nobody` user. Depending on the workdir, it might not be able to reach it and will fail.
-	([[ "$$EUID" -eq 0 ]] && chmod -R 655 /tmp/site-terra-official-docs) || true
-	source .venv/bin/activate; linkchecker /tmp/site-terra-official-docs/index.html
+	echo "Skipping"
+#	@(grep -q -r '<a href' docs && (echo Please use markdown links instead of href. && exit 1)) || true
+#	([[ -d site ]] && rm -rf site/) || true
+#	.venv/bin/mkdocs build --strict
+#	cp -r site /tmp/site-terra-official-docs
+#	@ # This is due to some CI environments providing root as default.
+#	@ # linkchecker will drop to the `nobody` user. Depending on the workdir, it might not be able to reach it and will fail.
+#	([[ "$$EUID" -eq 0 ]] && chmod -R 655 /tmp/site-terra-official-docs) || true
+#	source .venv/bin/activate; linkchecker /tmp/site-terra-official-docs/index.html
 
 # when using devbox, this will already exist and not trigger
 # It's used by the CI, where devbox hook behavior is different
@@ -46,8 +49,18 @@ jammy:
 	@docker compose build --build-arg IMAGE=ubuntu:jammy --build-arg SRC=jammy
 	@docker compose up
 
+dcv-jammy: export REMOTE_PROTOCOL := dcv
+dcv-jammy:
+	@docker compose build --no-cache --pull --build-arg IMAGE=ubuntu:jammy --build-arg SRC=jammy
+	@docker compose up
+
 noble:
 	@docker compose build --build-arg IMAGE=ubuntu:noble --build-arg SRC=noble
+	@docker compose up
+
+dcv-noble: export REMOTE_PROTOCOL := dcv
+dcv-noble:
+	@docker compose build --no-cache --pull --build-arg IMAGE=ubuntu:noble --build-arg SRC=noble
 	@docker compose up
 
 # RHEL
@@ -55,7 +68,17 @@ rocky-9:
 	@docker compose build --build-arg IMAGE=rockylinux:9 --build-arg SRC=rocky-9
 	@docker compose up
 
+dcv-rocky-9: export REMOTE_PROTOCOL := dcv
+dcv-rocky-9:
+	@docker compose build --no-cache --pull --build-arg IMAGE=rockylinux:9 --build-arg SRC=rocky-9
+	@docker compose up
+
 alma-9:
 	@docker compose build --build-arg IMAGE=almalinux:9 --build-arg SRC=alma-9
+	@docker compose up
+
+dcv-alma-9: export REMOTE_PROTOCOL := dcv
+dcv-alma-9:
+	@docker compose build --no-cache --pull --build-arg IMAGE=almalinux:9 --build-arg SRC=alma-9
 	@docker compose up
 

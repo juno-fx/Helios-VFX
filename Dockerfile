@@ -58,7 +58,7 @@ FROM alpine AS selkies-frontend
 # pull in args for the tag
 ARG SRC
 
-ENV SELKIES_VERSION="d70c9155e0df97ac1e6ac7a4cce04e4b04840286"
+ENV SELKIES_VERSION="af1a1c252563d2f136d641b81d6b1dd38a3a0d93"
 
 # grab package lists
 COPY --from=lists /work/lists/ /lists/
@@ -75,7 +75,7 @@ FROM distro AS base-image
 ARG SRC
 
 # version of selkies to clone
-ENV SELKIES_VERSION="d70c9155e0df97ac1e6ac7a4cce04e4b04840286"
+ENV SELKIES_VERSION="af1a1c252563d2f136d641b81d6b1dd38a3a0d93"
 
 # environment variables
 ENV PREFIX=/
@@ -88,6 +88,8 @@ ENV IDLE_TIME=30
 ENV SELKIES_INTERPOSER=/usr/lib/selkies_joystick_interposer.so
 ENV DISABLE_ZINK=false
 ENV SELKIES_NODE_VERSION=22
+ENV REMOTE_PROTOCOL=selkies
+ENV XDG_SESSION_TYPE=x11
 
 # grab package lists
 COPY --from=lists /work/lists/ /lists/
@@ -97,6 +99,10 @@ COPY --chmod=777 ${SRC}/build/system.sh /tmp/
 RUN /tmp/system.sh
 COPY --chmod=777 common/build/system.sh /tmp/
 RUN /tmp/system.sh
+
+# install amazon dcv (for REMOTE_PROTOCOL=dcv)
+COPY --chmod=777 common/build/dcv/*.sh /tmp/
+RUN /tmp/dcv.sh
 
 # install selkies
 COPY --chmod=777 common/build/selkies/*.sh /tmp/
@@ -119,7 +125,8 @@ COPY common/root/ /
 
 # LD_PRELOAD wrapper handlers (selkies hack)
 RUN chmod +x /usr/bin/thunar \
-    && chmod +x /usr/bin/sudo
+    && chmod +x /usr/bin/sudo \
+    && chmod +x /usr/bin/helios
 
 # copy in distro specific custom rootfs changes
 COPY ${SRC}/root/ /
@@ -136,3 +143,4 @@ EXPOSE 3001
 RUN rm -rf /.hold
 
 CMD ["/init"]
+
