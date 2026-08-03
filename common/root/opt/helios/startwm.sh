@@ -82,6 +82,42 @@ $(gpu_selector_verbose "$chosen")
 
 EOF
 
+# Restore the session saved by the previous container into the hostname-stamped
+# name xfce4 will look for on this one. Matched by exact key, so a workstation
+# never adopts a session that is not its own (see /opt/helios/session-key.sh).
+#
+# Entirely best effort: /home is not guaranteed to be persistent and having no
+# saved session is the normal first-boot case, so every failure here is a no-op.
+restore_session() {
+	local dir="${XDG_CACHE_HOME:-$HOME/.cache}/sessions"
+	local saved key staged
+
+	if [ ! -r /opt/helios/session-key.sh ]; then
+		echo ">>> session: session-key.sh not found, not restoring"
+		return 0
+	fi
+	source /opt/helios/session-key.sh
+	key=$(helios_session_key)
+
+	saved="${dir}/helios-session-${key}"
+	if [ ! -r "$saved" ]; then
+		echo ">>> session: no saved session at ${saved}, starting fresh"
+		return 0
+	fi
+
+	# The name xfce4 will look for on this container. Must agree with the glob
+	# the shutdown hook saves from, which matches on the short hostname.
+	staged="${dir}/xfce4-session-${HOSTNAME%%.*}${DISPLAY%.*}"
+
+	mkdir -p "$dir" 2>/dev/null || true
+	if cp -p "$saved" "$staged" 2>/dev/null; then
+		echo ">>> session: restored ${key} -> $(basename "$staged")"
+	else
+		echo ">>> session: failed to stage ${saved} as ${staged}"
+	fi
+}
+restore_session || true
+
 if [ -x /usr/bin/xfce4-session ]; then
 	if [[ -n "$DISABLE_VGL" ]]; then
 		# Run without vglrun if DISABLE_VGL is set
