@@ -61,7 +61,7 @@ jobs:
       - name: Build
         shell: bash
         env:
-          IMAGE: junoinnovations/helios:${{ (github.ref_name == 'main' && 'unstable') || steps.calculate_ref.outputs.ref }}-${{ matrix.distro.source }}
+          IMAGE: junoinnovations/helios-vfx:${{ (github.ref_name == 'main' && 'unstable') || steps.calculate_ref.outputs.ref }}-${{ matrix.distro.source }}
         run: |
           echo "Building ${IMAGE}"
           docker build . --build-arg IMAGE=${{ matrix.distro.image }} --build-arg SRC=${{ matrix.distro.source }} -t ${IMAGE}
@@ -70,7 +70,7 @@ jobs:
         shell: bash
         if: ${{ github.ref_name == 'main' || startsWith(github.event.ref, 'refs/tags/v') || steps.calculate_ref.outputs.is_feat == 'true' }}
         env:
-          IMAGE: junoinnovations/helios:${{ (github.ref_name == 'main' && 'unstable') || steps.calculate_ref.outputs.ref }}-${{ matrix.distro.source }}
+          IMAGE: junoinnovations/helios-vfx:${{ (github.ref_name == 'main' && 'unstable') || steps.calculate_ref.outputs.ref }}-${{ matrix.distro.source }}
         run: |
           echo "Building ${IMAGE}"
           docker push ${IMAGE}
