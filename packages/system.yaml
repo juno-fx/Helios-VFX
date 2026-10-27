@@ -282,3 +282,5 @@ packages:
   - debian: virtualgl
     rhel: VirtualGL
     alpine: virtualgl
+
+  - rhel: libxcrypt-compat
