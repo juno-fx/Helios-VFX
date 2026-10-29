@@ -119,6 +119,11 @@ restore_session() {
 restore_session || true
 
 if [ -x /usr/bin/xfce4-session ]; then
+	# Fix X11 gamma ramp for vgl-free operation (VirtualGL was previously mediating this)
+	if [ -x /etc/helios/init.d/02-fix-gamma.sh ]; then
+		/etc/helios/init.d/02-fix-gamma.sh
+	fi
+
 	if [[ -n "$DISABLE_VGL" ]]; then
 		# Run without vglrun if DISABLE_VGL is set
 		echo
